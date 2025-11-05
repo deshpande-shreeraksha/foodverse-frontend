@@ -1,40 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { HashRouter as Router } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import './style.css';
+
+import Home from './components/Home';
+import Favorites from './components/Favorites';
+import Navbar from './components/Navbar';
 
 function App() {
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    // ✅ Replace with your live backend URL
-    fetch('https://foodverse-backend.vercel.app/api/favorites')
-
-      .then((res) => res.json())
-      .then((data) => setFavorites(data))
-      .catch((err) => console.error('Error fetching favorites:', err));
-  }, []);
-
   return (
     <Router>
-      <div style={{ padding: '2rem' }}>
-        <h1>🍽️ Favorite Recipes</h1>
-        {favorites.length === 0 ? (
-          <p>No favorites saved yet.</p>
-        ) : (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            {favorites.map((recipe) => (
-              <li key={recipe._id} style={{ marginBottom: '2rem' }}>
-                <h3>{recipe.title}</h3>
-                <img src={recipe.image} alt={recipe.title} width="250" />
-                <p>
-                  <a href={recipe.sourceUrl} target="_blank" rel="noopener noreferrer">
-                    View Recipe
-                  </a>
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/favorites" element={<Favorites />} />
+      </Routes>
     </Router>
   );
 }
